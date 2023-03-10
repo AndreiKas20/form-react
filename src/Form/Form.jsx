@@ -77,7 +77,7 @@ export function Form({setIsOpenForm}) {
         <form ref={refForm} className={styles.form}>
             <Input isTouched={touchedName} isValid={validName} placeholder={'Имя'} type={'text'} onChange={onChangeName} value={valueName}/>
             <Input isTouched={touchedTel} isValid={validTel} placeholder={'Телефон'} isMask={true} type={'tel'} onChange={onChangeNumber} value={valueNumber}/>
-            <Input isTouched={touchedText} isValid={validText} placeholder={'Ваше сообщение'} type={'text'} onChange={onChangeText} value={valueText}/>
+            <Input isTextArea={true} isTouched={touchedText} isValid={validText} placeholder={'Ваше сообщение'} type={'text'} onChange={onChangeText} value={valueText}/>
             <Button isSend={true} isValid={isValid} onClick={submit} text={"Отправить"} file={dataSend}/>
         </form>
     );

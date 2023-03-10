@@ -34,3 +34,11 @@
     padding:0 35px 0 5px;
     color: #fff;
 }
+
+.text {
+    border: none;
+    border-bottom: 2px solid #fff;
+    outline: none;
+    height: 100px;
+    resize: none;
+}
