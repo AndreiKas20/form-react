@@ -3,6 +3,7 @@ import {Input} from "../UI/Input";
 import {Button} from "../UI/Button";
 import styles from './form.module.css';
 import {sendForm} from "../utils/sendForm";
+import {clear} from "@testing-library/user-event/dist/clear";
 
 export function Form({setIsOpenForm}) {
     const [valueName, setValueName] = useState('')
@@ -16,6 +17,9 @@ export function Form({setIsOpenForm}) {
     const [touchedTel, setTouchedTel] = useState(false)
     const [touchedText, setTouchedText] = useState(false)
     const [isValid, setIsValid] = useState(false)
+    const [successfullySent, setSuccessfullySent] = useState(false)
+    const [faultSent, setFaultSent] = useState(false)
+    const refForm = useRef(null)
     const outFormClick = (event) => {
         if (!refForm.current?.contains(event.target)) {
             setIsOpenForm(false)
@@ -57,6 +61,7 @@ export function Form({setIsOpenForm}) {
         setTouchedName(false)
         setTouchedTel(false)
         setTouchedText(false)
+        setSuccessfullySent(true)
     }
 
     useEffect(() => {
@@ -72,9 +77,24 @@ export function Form({setIsOpenForm}) {
                document.removeEventListener('click', outFormClick)
        }
     })
-    const refForm = useRef(null)
+    useEffect(() => {
+        const timer = setTimeout(()=>{
+            setSuccessfullySent(false)
+            setFaultSent(false)
+        },2000)
+        return () => clearTimeout(timer)
+    }, [successfullySent]);
+
+
+
     return (
         <form ref={refForm} className={styles.form}>
+            {
+              successfullySent &&  <span className={styles.sucMessage}>Данные успешно отправлены</span>
+            }
+            {
+                faultSent && <span className={styles.faultMessage}>Ошибка при отправке данных</span>
+            }
             <Input isTouched={touchedName} isValid={validName} placeholder={'Имя'} type={'text'} onChange={onChangeName} value={valueName}/>
             <Input isTouched={touchedTel} isValid={validTel} placeholder={'Телефон'} isMask={true} type={'tel'} onChange={onChangeNumber} value={valueNumber}/>
             <Input isTextArea={true} isTouched={touchedText} isValid={validText} placeholder={'Ваше сообщение'} type={'text'} onChange={onChangeText} value={valueText}/>
