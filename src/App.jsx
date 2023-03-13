@@ -3,7 +3,8 @@ import './assets/css/normalize.css'
 import './assets/css/main.global.css'
 import {Form} from "./Form";
 import {useState} from "react";
-import {Button} from "./UI/Button";
+import Button from "./UI/Button/Button";
+
 
 function App() {
     const [isForm, setIsForm] = useState(false)

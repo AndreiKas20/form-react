@@ -1,9 +1,9 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Input} from "../UI/Input";
-import {Button} from "../UI/Button";
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styles from './form.module.css';
 import {sendForm} from "../utils/sendForm";
-import {clear} from "@testing-library/user-event/dist/clear";
+import Input from "../UI/Input/Input";
+import Button from "../UI/Button/Button";
+
 
 export function Form({setIsOpenForm}) {
     const [valueName, setValueName] = useState('')
@@ -20,12 +20,12 @@ export function Form({setIsOpenForm}) {
     const [successfullySent, setSuccessfullySent] = useState(false)
     const [faultSent, setFaultSent] = useState(false)
     const refForm = useRef(null)
-    const outFormClick = (event) => {
+    const outFormClick = useCallback((event) => {
         if (!refForm.current?.contains(event.target)) {
             setIsOpenForm(false)
         }
-    }
-    const onChangeName = (e) => {
+    },[setIsOpenForm])
+    const onChangeName = useCallback((e) => {
         setTouchedName(true)
         if (e.target.value.length > 2 && /^[a-zA-ZА-Яа-я]+$/.test(e.target.value)) {
             setValidName(true)
@@ -33,8 +33,8 @@ export function Form({setIsOpenForm}) {
             setValidName(false)
         }
         setValueName(e.target.value)
-    }
-    const onChangeNumber = (e) => {
+    },[])
+    const onChangeNumber = useCallback((e) => {
         setTouchedTel(true)
         if (e.target.value.replace(/[+()_-]/g, '').length === 11) {
             setValidTel(true)
@@ -42,8 +42,8 @@ export function Form({setIsOpenForm}) {
             setValidTel(false)
         }
         setValueNumber(e.target.value)
-    }
-    const onChangeText = (e) => {
+    },[])
+    const onChangeText = useCallback((e) => {
         setTouchedText(true)
         if (e.target.value.length > 1) {
             setValidText(true)
@@ -51,9 +51,9 @@ export function Form({setIsOpenForm}) {
             setValidText(false)
         }
         setValueText(e.target.value)
-    }
+    },[])
 
-    const submit = () => {
+    const submit = useCallback(() => {
         setDataSend(sendForm(valueName,valueNumber,valueText))
         setValueText('')
         setValueNumber('')
@@ -62,8 +62,7 @@ export function Form({setIsOpenForm}) {
         setTouchedTel(false)
         setTouchedText(false)
         setSuccessfullySent(true)
-    }
-
+    },[])
     useEffect(() => {
         if(touchedName && touchedTel && touchedText && validTel && validName && validText) {
             setIsValid(true)
@@ -83,10 +82,8 @@ export function Form({setIsOpenForm}) {
             setFaultSent(false)
         },2000)
         return () => clearTimeout(timer)
+
     }, [successfullySent]);
-
-
-
     return (
         <form ref={refForm} className={styles.form}>
             {

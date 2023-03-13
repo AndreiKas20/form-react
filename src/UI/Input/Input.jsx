@@ -3,13 +3,13 @@ import styles from './input.module.css';
 import InputMask from 'react-input-mask';
 
 
-export function Input({type, value, onChange, isMask, placeholder, isValid, isTouched, isTextArea}) {
+export default React.memo(function Input({type, value, onChange, isMask, placeholder, isValid, isTouched, isTextArea}) {
     return (
         <div className={styles.blockInput}>
             {
                 isTextArea &&
                 <textarea onFocus={onChange} style={!isValid ? {borderBottomColor: 'red'} : {}}
-                          onChange={event => onChange(event)} className={`${styles.input} ${styles.text}`} value={value}/>
+                          onChange={onChange} className={`${styles.input} ${styles.text}`} value={value}/>
             }
             {
                 isMask && !isTextArea &&
@@ -21,9 +21,9 @@ export function Input({type, value, onChange, isMask, placeholder, isValid, isTo
             {
                 !isMask && !isTextArea &&
                 <input onFocus={onChange} style={!isValid ? {borderBottomColor: 'red'} : {}} formNoValidate={false}
-                       onChange={event => onChange(event)} className={styles.input} type={type} value={value}/>
+                       onChange={onChange} className={styles.input} type={type} value={value}/>
             }
             <span style={isTouched ? {top: '0'} : {}} className={styles.placeholder}>{placeholder}</span>
         </div>
     )
-}
+})
